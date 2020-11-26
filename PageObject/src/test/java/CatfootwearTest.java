@@ -9,7 +9,7 @@ public class CatfootwearTest {
 
     private WebDriver driver;
 
-    @BeforeMethod
+    @BeforeTest
     public void init() {
         driver = new ChromeDriver();
     }
@@ -27,14 +27,13 @@ public class CatfootwearTest {
     public void loginWithBadEmailAndPassword() {
         Boolean canLogin = new CatfootwearAccountPage(driver)
                 .openPage()
-                .closePopUps()
                 .setEmail("qwe@asd.com")
                 .setPassword("qweqwe")
                 .canLogin();
         Assert.assertFalse(canLogin, "Login and Password were correct!");
     }
 
-    @AfterMethod
+    @AfterTest
     public void closeDriver() {
         driver.quit();
     }
