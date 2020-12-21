@@ -21,6 +21,13 @@ public abstract class AbstractPage {
         return this;
     }
 
+    public String getLoggedAccountFirstName() {
+        return new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@class='user-account']")))
+                .getText()
+                .replace("Welcome, ","");
+    }
+
     protected AbstractPage(WebDriver driver) {
         this.driver = driver;
     }

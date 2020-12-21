@@ -29,10 +29,14 @@ public class CatfootwearLoginPage extends AbstractPage{
         return this;
     }
 
-    public Boolean canLogin(User user) {
+    public CatfootwearItemPage login(User user) {
         sendKeysByXpath(By.xpath("//input[@class='input-text email-input required']"), user.getEmail());
         sendKeysByXpath(By.id("dwfrm_login_password"), user.getPassword());
         clickButtonByXpath(By.id("account-login-btn"));
-        return true;
+
+        new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
+                .until(PageLoaded());
+
+        return new CatfootwearItemPage(driver);
     }
 }

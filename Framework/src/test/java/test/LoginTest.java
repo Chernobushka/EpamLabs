@@ -11,15 +11,14 @@ import service.UserCreator;
 public class LoginTest extends CommonConditions{
 
     @Test
-    public void loginWithBadEmailAndPassword() {
+    public void loginTest() {
         User testUser = UserCreator.withCredentialsFromProperty();
-        System.out.println(testUser.getEmail());
-        System.out.println(testUser.getPassword());
-        Boolean canLogin = new CatfootwearLoginPage(driver)
+        String loggedUserFirstName = new CatfootwearLoginPage(driver)
                 .openPage()
                 .closeCookiesMessage()
-                .canLogin(testUser);
-        Assert.assertFalse(canLogin);
+                .login(testUser)
+                .getLoggedAccountFirstName();
+        Assert.assertEquals(testUser.getFirstName(),loggedUserFirstName);
     }
 
     public void test1() {
