@@ -1,5 +1,6 @@
 package pageobject.catfootwear;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -31,7 +32,7 @@ public class CatfootwearItemPage extends Page {
                 .until(PageLoaded());
         return this;
     }
-
+    
 
     public CatfootwearItemPage closePopUps() {
         new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)

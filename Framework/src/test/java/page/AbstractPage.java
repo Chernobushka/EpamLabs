@@ -1,4 +1,4 @@
-package pageobject;
+package page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -10,16 +10,31 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class Page {
-
+public abstract class AbstractPage {
     protected WebDriver driver;
     protected final int WAIT_TIMEOUT_SECONDS = 30;
 
-    protected abstract Page openPage();
+    public AbstractPage closeCookiesMessage() {
+        new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@class='optanon-alert-box-close banner-close-button']")))
+                .click();
+        return this;
+    }
 
-    protected Page(WebDriver driver) {
+    protected AbstractPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);
+    }
+
+    protected void clickButtonByXpath(By by) {
+        new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
+                .until(ExpectedConditions.presenceOfElementLocated(by))
+                .click();
+    }
+
+    protected void sendKeysByXpath(By by, String keys) {
+        new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
+                .until(ExpectedConditions.presenceOfElementLocated(by))
+                .sendKeys(keys);
     }
 
     protected ExpectedCondition<Boolean> PageLoaded() {
