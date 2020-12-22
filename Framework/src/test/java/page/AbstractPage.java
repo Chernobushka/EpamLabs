@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -26,6 +27,11 @@ public abstract class AbstractPage {
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@class='user-account']")))
                 .getText()
                 .replace("Welcome, ","");
+    }
+
+    protected WebElement getElementLocatedBy(By by) {
+        return new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
+                .until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
     protected AbstractPage(WebDriver driver) {
