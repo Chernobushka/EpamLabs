@@ -13,7 +13,7 @@ import model.*;
 public class CatfootwearItemPage extends AbstractPage {
 
     //https://www.catfootwear.com/US/en/excavator-superlite-waterproof-nano-toe-work-boot/194713401701.html
-
+    //https://www.catfootwear.com/US/en/excavator-superlite-waterproof-nano-toe-work-boot/194713401701.html
 
     private final String PAGE_URL = "https://www.catfootwear.com/US/en/excavator-superlite-waterproof-nano-toe-work-boot/44904M.html?dwvar_44904M_color=P91196";
 

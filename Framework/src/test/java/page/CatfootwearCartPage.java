@@ -3,14 +3,19 @@ package page;
 import model.Item;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class CatfootwearCartPage extends AbstractPage {
 
     private final String PAGE_URL = "https://www.catfootwear.com/US/en/cart";
 
     // //button[@class='button-text remove-item']
+
 
     public CatfootwearCartPage(WebDriver driver) {
         super(driver);
@@ -47,6 +52,22 @@ public class CatfootwearCartPage extends AbstractPage {
         clickButtonByXpath(By.xpath("//a[@aria-controls='promo-code-content']"));
         sendKeysByXpath(By.id("dwfrm_cart_couponCode"), promocode);
         clickButtonByXpath(By.id("add-coupon"));
+        return this;
+    }
+
+    public CatfootwearCartPage deleteItem(int number) {
+        List<WebElement> elements = driver.findElements(By.xpath("//button[@class='button-text remove-item']"));
+        elements.get(number - 1).click();
+        return this;
+    }
+
+    public CatfootwearCartPage clearCart() {
+        List<WebElement> elements = driver.findElements(By.xpath("//button[@class='button-text remove-item']"));
+        for (WebElement x : elements) {
+            new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
+                    .until(ExpectedConditions.visibilityOf(x))
+                    .click();
+        }
         return this;
     }
 }
