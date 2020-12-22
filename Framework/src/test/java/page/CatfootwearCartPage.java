@@ -14,11 +14,6 @@ public class CatfootwearCartPage extends AbstractPage {
 
     private final String PAGE_URL = "https://www.catfootwear.com/US/en/cart";
 
-    // //button[@class='button-text remove-item']
-    // //h3[@class='coupon-applied']
-    // //div[contains(text(),'Express')]
-
-
     public CatfootwearCartPage(WebDriver driver) {
         super(driver);
     }
