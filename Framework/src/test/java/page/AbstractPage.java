@@ -55,6 +55,12 @@ public abstract class AbstractPage {
                 .sendKeys(keys);
     }
 
+    public int getNumberOfItemsInCart() {
+        return Integer.parseInt(new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='mini-cart-quantity-bag']")))
+                .getAttribute("textContent"));
+    }
+
     protected ExpectedCondition<Boolean> PageLoaded() {
         return new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {

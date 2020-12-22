@@ -33,11 +33,11 @@ public class CreditCard {
 
     @Override
     public String toString() {
-        return "Credit Card{" +
-                "Name = " + nameOnCard + " "+
-                "Card Number = " + cardNumber + " " +
-                "Expiration Month = " + expirationDateMonth + " " +
-                "Expiration Year = " + expirationDateYear + "}";
+        return "Default Payment Method" + "\n" +
+                nameOnCard + "\n" +
+                "Visa" + "\n" +
+                "************" + cardNumber.substring(12) + "\n" +
+                "Expiration " + expirationDateMonth + "/" + expirationDateYear.substring(2);
     }
 
     @Override

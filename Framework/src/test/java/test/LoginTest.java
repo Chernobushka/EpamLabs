@@ -19,66 +19,103 @@ import service.UserCreator;
 public class LoginTest extends CommonConditions{
 
     @Test(priority = 1)
-    public void loginTest() {
-        User testUser = UserCreator.withCredentialsFromProperty("first");
-        String loggedUserFirstName = new CatfootwearLoginPage(driver)
-                .openPage()
-                .closeCookiesMessage()
-                .login(testUser)
-                .getLoggedAccountFirstName();
-        Assert.assertEquals(testUser.getFirstName(),loggedUserFirstName);
-    }
-
-    //@Test(priority = 2)
-    public void addItemToCartWithoutSelectingSizeOrWidth() {
-        Item testItem = ItemCreator.withCredentialsFromProperty("first");
-        CatfootwearItemPage page = new CatfootwearItemPage(driver)
-                .openPage(testItem)
-                .closeCookiesMessage();
-        int numberOfItemsInCartBefore = page.getNumberOfItemsInCart();
-        page.selectItem();
-        int numberOfItemsInCartAfter = page.getNumberOfItemsInCart();
-
-
-        Assert.assertEquals(numberOfItemsInCartAfter, numberOfItemsInCartBefore + 1);
-    }
-    //@Test(priority = 2)
-    public void test1() {
-        CatfootwearCartPage page = new CatfootwearCartPage(driver)
-                .openPage();
-        System.out.println(page.getOrderPrice());
-        System.out.println(page.getShippingPrice());
-        System.out.println(page.getShippingType());
-
-        page.applyPromocode("SECRET20");
-    }
-    //@Test
-    public void test2() {
+    public void registerWithBadCredentials() {
         User testUser = UserCreator.withCredentialsFromProperty("first");
         String loggedUserFirstName = new CatfootwearRegisterPage(driver)
                 .openPage()
                 .closeCookiesMessage()
                 .register(testUser)
                 .getLoggedAccountFirstName();
-        Assert.assertEquals(testUser.getFirstName(),loggedUserFirstName);
-    }
-
-    //@Test(priority = 2)
-    public void test3() throws InterruptedException {
-        new CatfootwearCartPage(driver)
-                .openPage()
-                .deleteItem(3);
-
-        Thread.sleep(5000);
+        Assert.assertNotEquals(testUser.getFirstName(),loggedUserFirstName);
     }
 
     @Test(priority = 2)
-    public void test4() throws InterruptedException {
-        CreditCard testCard = CardCreator.withCredentialsFromProperty();
-        new CatfootwearWalletPage(driver)
+    public void loginTest() {
+        User testUser = UserCreator.withCredentialsFromProperty("first");
+        String loggedUserFirstName = new CatfootwearLoginPage(driver)
                 .openPage()
-                .addCreditCard(testCard);
+                .login(testUser)
+                .getLoggedAccountFirstName();
+        Assert.assertEquals(testUser.getFirstName(),loggedUserFirstName);
+    }
 
-        Thread.sleep(5000);
+    @Test(priority = 3)
+    public void expressShippingPriceTest() {
+        Item firstTestItem = ItemCreator.withCredentialsFromProperty("first");
+        Item secondTestItem = ItemCreator.withCredentialsFromProperty("fourth");
+
+        CatfootwearItemPage itemPage = new CatfootwearItemPage(driver);
+        itemPage.openPage(firstTestItem)
+                .selectItem();
+        CatfootwearCartPage cartPage = itemPage.openPage(secondTestItem)
+                .selectItem();
+        Assert.assertTrue(cartPage.getShippingPrice() == 0);
+        Assert.assertTrue(cartPage.getShippingType().contains("Express"));
+    }
+
+    @Test(priority = 4)
+    public void applyPromocodeTest() {
+        CatfootwearCartPage cartPage = new CatfootwearCartPage(driver)
+                .openPage();
+        double priceBefore = cartPage.getOrderPrice();
+        double priceAfter = cartPage
+                .applyPromocode("SECRET20")
+                .getOrderPrice();
+        System.out.println(priceBefore);
+        System.out.println(priceAfter);
+        Assert.assertEquals(priceAfter, priceBefore * 0.8);
+    }
+
+    @Test(priority = 5)
+    public void changeSippingTypeOnItemDelete() {
+        CatfootwearCartPage cartPage = new CatfootwearCartPage(driver)
+                .openPage()
+                .deleteItem(1);
+        Assert.assertTrue(cartPage.getShippingType().contains("Standard"));
+        Assert.assertNotEquals(cartPage.getExpressShippingPrice(), 0);
+    }
+
+    @Test(priority = 6)
+    public void addItemToCart() {
+        Item testItem = ItemCreator.withCredentialsFromProperty("first");
+        CatfootwearItemPage page = new CatfootwearItemPage(driver)
+                .openPage(testItem);
+        int numberOfItemsInCartBefore = page.getNumberOfItemsInCart();
+        int numberOfItemsInCartAfter = page.selectItem()
+                .getNumberOfItemsInCart();
+
+        Assert.assertEquals(numberOfItemsInCartAfter, numberOfItemsInCartBefore + 1);
+    }
+
+    @Test(priority = 7)
+    public void addItemToCartWithoutSelectingSizeAndWidth() {
+        Item testItem = ItemCreator.withCredentialsFromProperty("third");
+        CatfootwearItemPage page = new CatfootwearItemPage(driver)
+                .openPage(testItem);
+        int numberOfItemsInCartBefore = page.getNumberOfItemsInCart();
+        int numberOfItemsInCartAfter = page.selectItem()
+                .getNumberOfItemsInCart();
+
+        Assert.assertEquals(numberOfItemsInCartAfter, numberOfItemsInCartBefore);
+    }
+
+
+    @Test(priority = 8)
+    public void addItemToCartWithBadSizeAndWidth() {
+        Item testItem = ItemCreator.withCredentialsFromProperty("second");
+        boolean availability = new CatfootwearItemPage(driver)
+                .openPage(testItem)
+                .isAvailable();
+        Assert.assertFalse(availability);
+    }
+
+    @Test(priority = 9)
+    public void addCreditCardTest() {
+        CreditCard card = CardCreator.withCredentialsFromProperty();
+        String defaultPayment = new CatfootwearWalletPage(driver)
+                .openPage()
+                .addCreditCard(card)
+                .getDefaultPaymentMethod();
+        Assert.assertTrue(defaultPayment.contains(card.toString()));
     }
 }

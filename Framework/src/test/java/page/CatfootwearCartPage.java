@@ -15,6 +15,8 @@ public class CatfootwearCartPage extends AbstractPage {
     private final String PAGE_URL = "https://www.catfootwear.com/US/en/cart";
 
     // //button[@class='button-text remove-item']
+    // //h3[@class='coupon-applied']
+    // //div[contains(text(),'Express')]
 
 
     public CatfootwearCartPage(WebDriver driver) {
@@ -28,8 +30,19 @@ public class CatfootwearCartPage extends AbstractPage {
         return this;
     }
 
+    public double getExpressShippingPrice() {
+        String price = getElementLocatedBy(By.xpath("//div[contains(text(),'Express')]"))
+            .getText()
+            .replace("Express-","");
+        if (price.contains("FREE"))
+            return 0;
+        else
+            return Double.parseDouble(price);
+
+    }
+
     public double getOrderPrice() {
-        return Double.parseDouble(getElementLocatedBy(By.xpath("//tr[@class='order-subtotal']/td[@class='textalign-right']"))
+        return Double.parseDouble(getElementLocatedBy(By.xpath("//tr[@class='order-total']/td[@class='textalign-right']"))
             .getText()
             .replace("$",""));
     }
@@ -44,15 +57,14 @@ public class CatfootwearCartPage extends AbstractPage {
         String type = getElementLocatedBy(By.xpath("//tr[@class='order-shipping']/td[1]"))
                 .getText();
 
-        return type.replace("Shipping ", "")
-                .substring(0, type.indexOf(',') - 3);
+        return type.replace("Shipping ", "");
     }
 
     public CatfootwearCartPage applyPromocode(String promocode) {
         clickButtonByXpath(By.xpath("//a[@aria-controls='promo-code-content']"));
         sendKeysByXpath(By.id("dwfrm_cart_couponCode"), promocode);
         clickButtonByXpath(By.id("add-coupon"));
-        return this;
+        return this.openPage();
     }
 
     public CatfootwearCartPage deleteItem(int number) {

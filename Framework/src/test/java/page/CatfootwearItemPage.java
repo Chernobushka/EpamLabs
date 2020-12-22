@@ -55,14 +55,14 @@ public class CatfootwearItemPage extends AbstractPage {
         return this;
     }
 
-    public int getNumberOfItemsInCart() {
-        return Integer.parseInt(new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='mini-cart-quantity-bag']")))
-                .getAttribute("textContent"));
+    public boolean isAvailable() {
+        WebElement button = driver.findElement(By.id("out-of-stock-cta"));
+        return !(button.isDisplayed());
     }
 
-    public CatfootwearItemPage selectItem() {
+    public CatfootwearCartPage selectItem() {
         clickButtonByXpath(By.id("add-to-cart"));
-        return this;
+        return new CatfootwearCartPage(driver)
+                .openPage();
     }
 }
