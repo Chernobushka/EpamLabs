@@ -32,12 +32,11 @@ public class CatfootwearCartPage extends AbstractPage {
 
     public double getExpressShippingPrice() {
         String price = getElementLocatedBy(By.xpath("//div[contains(text(),'Express')]"))
-            .getText()
-            .replace("Express - $","");
+            .getText();
         if (price.contains("FREE"))
             return 0;
         else
-            return Double.parseDouble(price);
+            return Double.parseDouble(price.substring(11));
 
     }
 
