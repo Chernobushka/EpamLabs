@@ -18,34 +18,16 @@ import service.UserCreator;
 
 public class LoginTest extends CommonConditions{
 
+
+
     @Test(priority = 1)
-    public void registerWithBadCredentials() {
-        User testUser = UserCreator.withCredentialsFromProperty("first");
-        String loggedUserFirstName = new CatfootwearRegisterPage(driver)
-                .openPage()
-                .closeCookiesMessage()
-                .register(testUser)
-                .getLoggedAccountFirstName();
-        Assert.assertNotEquals(testUser.getFirstName(),loggedUserFirstName);
-    }
-
-    @Test(priority = 2)
-    public void loginTest() {
-        User testUser = UserCreator.withCredentialsFromProperty("first");
-        String loggedUserFirstName = new CatfootwearLoginPage(driver)
-                .openPage()
-                .login(testUser)
-                .getLoggedAccountFirstName();
-        Assert.assertEquals(testUser.getFirstName(),loggedUserFirstName);
-    }
-
-    @Test(priority = 3)
     public void expressShippingPriceTest() {
         Item firstTestItem = ItemCreator.withCredentialsFromProperty("first");
         Item secondTestItem = ItemCreator.withCredentialsFromProperty("fourth");
 
         CatfootwearItemPage itemPage = new CatfootwearItemPage(driver);
         itemPage.openPage(firstTestItem)
+                .closeCookiesMessage()
                 .selectItem();
         CatfootwearCartPage cartPage = itemPage.openPage(secondTestItem)
                 .selectItem();
@@ -53,7 +35,7 @@ public class LoginTest extends CommonConditions{
         Assert.assertTrue(cartPage.getShippingType().contains("Express"));
     }
 
-    @Test(priority = 4)
+    @Test(priority = 2)
     public void applyPromocodeTest() {
         CatfootwearCartPage cartPage = new CatfootwearCartPage(driver)
                 .openPage();
@@ -66,7 +48,7 @@ public class LoginTest extends CommonConditions{
         Assert.assertEquals(priceAfter, priceBefore * 0.8);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 3)
     public void changeSippingTypeOnItemDelete() {
         CatfootwearCartPage cartPage = new CatfootwearCartPage(driver)
                 .openPage()
@@ -75,7 +57,7 @@ public class LoginTest extends CommonConditions{
         Assert.assertNotEquals(cartPage.getExpressShippingPrice(), 0);
     }
 
-    @Test(priority = 6)
+    @Test(priority = 4)
     public void addItemToCart() {
         Item testItem = ItemCreator.withCredentialsFromProperty("first");
         CatfootwearItemPage page = new CatfootwearItemPage(driver)
@@ -87,7 +69,7 @@ public class LoginTest extends CommonConditions{
         Assert.assertEquals(numberOfItemsInCartAfter, numberOfItemsInCartBefore + 1);
     }
 
-    @Test(priority = 7)
+    @Test(priority = 5)
     public void addItemToCartWithoutSelectingSizeAndWidth() {
         Item testItem = ItemCreator.withCredentialsFromProperty("third");
         CatfootwearItemPage page = new CatfootwearItemPage(driver)
@@ -100,13 +82,33 @@ public class LoginTest extends CommonConditions{
     }
 
 
-    @Test(priority = 8)
+    @Test(priority = 6)
     public void addItemToCartWithBadSizeAndWidth() {
         Item testItem = ItemCreator.withCredentialsFromProperty("second");
         boolean availability = new CatfootwearItemPage(driver)
                 .openPage(testItem)
                 .isAvailable();
         Assert.assertFalse(availability);
+    }
+
+    @Test(priority = 7)
+    public void registerWithBadCredentials() {
+        User testUser = UserCreator.withCredentialsFromProperty("first");
+        String loggedUserFirstName = new CatfootwearRegisterPage(driver)
+                .openPage()
+                .register(testUser)
+                .getLoggedAccountFirstName();
+        Assert.assertNotEquals(testUser.getFirstName(),loggedUserFirstName);
+    }
+
+    @Test(priority = 8)
+    public void loginTest() {
+        User testUser = UserCreator.withCredentialsFromProperty("first");
+        String loggedUserFirstName = new CatfootwearLoginPage(driver)
+                .openPage()
+                .login(testUser)
+                .getLoggedAccountFirstName();
+        Assert.assertEquals(testUser.getFirstName(),loggedUserFirstName);
     }
 
     @Test(priority = 9)
