@@ -33,7 +33,7 @@ public class CatfootwearWalletPage extends AbstractPage {
 
         clickButtonByXpath(By.id("applyBtn"));
 
-        return this.openPage();
+        return this;
     }
 
     public String getDefaultPaymentMethod() {
