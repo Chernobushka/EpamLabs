@@ -12,13 +12,14 @@ import org.testng.annotations.Test;
 import page.CatfootwearCartPage;
 import page.CatfootwearItemPage;
 import page.CatfootwearLoginPage;
+import page.CatfootwearRegisterPage;
 import service.ItemCreator;
 import service.UserCreator;
 
 
 public class LoginTest extends CommonConditions{
 
-    @Test(priority = 1)
+    //@Test(priority = 1)
     public void loginTest() {
         User testUser = UserCreator.withCredentialsFromProperty();
         String loggedUserFirstName = new CatfootwearLoginPage(driver)
@@ -42,7 +43,7 @@ public class LoginTest extends CommonConditions{
 
         Assert.assertEquals(numberOfItemsInCartAfter, numberOfItemsInCartBefore + 1);
     }
-    @Test(priority = 2)
+    //@Test(priority = 2)
     public void test1() {
         CatfootwearCartPage page = new CatfootwearCartPage(driver)
                 .openPage();
@@ -51,5 +52,15 @@ public class LoginTest extends CommonConditions{
         System.out.println(page.getShippingType());
 
         page.applyPromocode("SECRET20");
+    }
+    @Test
+    public void test2() {
+        User testUser = UserCreator.withCredentialsFromProperty();
+        String loggedUserFirstName = new CatfootwearRegisterPage(driver)
+                .openPage()
+                .closeCookiesMessage()
+                .register(testUser)
+                .getLoggedAccountFirstName();
+        Assert.assertEquals(testUser.getFirstName(),loggedUserFirstName);
     }
 }

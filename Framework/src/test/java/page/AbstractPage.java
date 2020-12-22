@@ -29,6 +29,11 @@ public abstract class AbstractPage {
                 .replace("Welcome, ","");
     }
 
+    public AbstractPage logout() {
+        clickButtonByXpath(By.xpath("//a[@class='logout']"));
+        return this;
+    }
+
     protected WebElement getElementLocatedBy(By by) {
         return new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
                 .until(ExpectedConditions.presenceOfElementLocated(by));
